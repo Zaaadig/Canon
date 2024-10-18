@@ -14,7 +14,7 @@ public class EnemyController : MonoBehaviour
     private NavMeshAgent m_agent;
     private NavMeshPath m_currentPath;
     private float m_pathTimer = 0;
-    private float m_pathDelay = 0.5f;
+    [SerializeField] private float m_pathDelay = 0.5f;
     void Start()
     {
         m_agent = GetComponent<NavMeshAgent>();
