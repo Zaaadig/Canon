@@ -8,9 +8,14 @@ public class CanonController : MonoBehaviour
     [SerializeField] private Transform m_shootPosition;
     [SerializeField] private BoxCollider m_boxCollider;
 
-    private void Start()
+    //private void Start()
+    void Update()
     {
-        StartCoroutine(C_Shoot());
+        if (Input.GetMouseButtonDown(0))
+        {
+            StartCoroutine(C_Shoot());
+        }
+        
     }
 
     private IEnumerator C_Shoot()
@@ -19,7 +24,7 @@ public class CanonController : MonoBehaviour
         yield return new WaitForSeconds(cooldown);
 
         ShootProjectile();
-        StartCoroutine(C_Shoot());
+        //StartCoroutine(C_Shoot());
     }
 
     private void ShootProjectile()
