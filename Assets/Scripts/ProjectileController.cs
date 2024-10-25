@@ -33,13 +33,8 @@ public class ProjectileController : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
         transform.position = targetPosition;
-        DestroyProjectile();
     }
 
-    private void DestroyProjectile()
-    {
-        m_explosionVFX.transform.parent = null;
-        m_explosionVFX.Play();
-        Destroy(gameObject);
-    }
+
+
 }
