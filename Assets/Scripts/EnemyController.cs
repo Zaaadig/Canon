@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class EnemyController : MonoBehaviour
 {
     [Header("References")] 
-    [SerializeField] private Transform m_target;
+    public Transform m_target;
     [SerializeField] private Rigidbody m_rb;
 
     [Header("Values")]
@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour
     private NavMeshPath m_currentPath;
     private float m_pathTimer = 0;
     [SerializeField] private float m_pathDelay = 0.5f;
+
     void Start()
     {
         m_agent = GetComponent<NavMeshAgent>();
