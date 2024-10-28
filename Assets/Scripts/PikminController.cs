@@ -1,6 +1,7 @@
 using TMPro;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PikminController : MonoBehaviour
 {
@@ -11,18 +12,23 @@ public class PikminController : MonoBehaviour
     [SerializeField] private AnimationCurve m_animationCurveHorizontal;
     [SerializeField] private Vector2 m_verticalOffsetRange;
     [SerializeField] private Vector2 m_horizontalOffsetRange;
-    //[SerializeField] private ParticleSystem m_VFX;
+    [SerializeField] private ParticleSystem m_VFX;
+    [SerializeField] private ParticleSystem m_VFXDirt;
     [SerializeField] private float m_rangeLaunch = 1f;
     [SerializeField] private float m_rbDrag = 3f;
+    [SerializeField] private float m_animationDelay = 3f;
     [SerializeField] private bool m_isShoot;
     [SerializeField] private bool m_isFollow;
     [SerializeField] private bool m_isComingBack;
+    
+    private NavMeshAgent m_agent; 
     private Rigidbody m_rb;
 
     public bool IsFollow { get => m_isFollow; set => m_isFollow = value; }
 
     private void Start()
     {
+        m_agent = GetComponent<NavMeshAgent>();
         m_isShoot = false;
         m_isFollow = false;
         m_isComingBack = false;
@@ -37,6 +43,7 @@ public class PikminController : MonoBehaviour
     }
     private IEnumerator C_Shoot(Vector3 m_raycastHit)
     {
+        m_enemyController.enabled = false;
         m_isShoot = true;
         m_isFollow = false;
         m_isComingBack = false;
@@ -58,6 +65,20 @@ public class PikminController : MonoBehaviour
         }
         transform.position = m_raycastHit;
         m_isShoot = false;
+        m_VFX.Play();
+        m_VFXDirt.Play();
+
+        StartCoroutine(Delay());
+        
+    }
+
+    private IEnumerator Delay()
+    {
+        m_rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        //jouer l'animation
+        yield return new WaitForSeconds(m_animationDelay);
+        m_enemyController.enabled = true;
+        m_rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
     private void Update()

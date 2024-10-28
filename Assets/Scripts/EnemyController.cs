@@ -6,6 +6,8 @@ public class EnemyController : MonoBehaviour
     [Header("References")] 
     public Transform m_target;
     [SerializeField] private Rigidbody m_rb;
+    [SerializeField] private GameObject m_self;
+    [SerializeField] private GameObject m_player;
 
     [Header("Values")]
     [SerializeField] private float m_acceleration;
@@ -25,6 +27,7 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        m_self.transform.LookAt(m_player.transform.position);
         m_pathTimer += Time.deltaTime;
 
         if(m_pathTimer >= m_pathDelay)
