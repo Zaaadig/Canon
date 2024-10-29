@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class PikminController : MonoBehaviour
 {
+    [SerializeField] private GameObject m_self;
     [SerializeField] private PlayerCanonController m_controller;
     [SerializeField] private EnemyController m_enemyController;
     [SerializeField] private Vector2 m_movementDuration;
@@ -23,12 +24,14 @@ public class PikminController : MonoBehaviour
     
     private NavMeshAgent m_agent; 
     private Rigidbody m_rb;
+    public CapsuleCollider m_capsuleCollider;
 
     public bool IsFollow { get => m_isFollow; set => m_isFollow = value; }
 
     private void Start()
     {
         m_agent = GetComponent<NavMeshAgent>();
+        //m_capsuleCollider = GetComponentInChildren<CapsuleCollider>();
         m_isShoot = false;
         m_isFollow = false;
         m_isComingBack = false;
@@ -44,6 +47,8 @@ public class PikminController : MonoBehaviour
     private IEnumerator C_Shoot(Vector3 m_raycastHit)
     {
         m_enemyController.enabled = false;
+        //m_capsuleCollider.enabled = false;
+        m_self.transform.LookAt(m_raycastHit);
         m_isShoot = true;
         m_isFollow = false;
         m_isComingBack = false;
@@ -61,6 +66,7 @@ public class PikminController : MonoBehaviour
             Vector3 wantedPos = Vector3.Lerp(startPosition, m_raycastHit, timer / duration);
             transform.position = wantedPos + (Vector3.right * xOffset) + (Vector3.up * yOffset);
             yield return new WaitForEndOfFrame();
+            //m_capsuleCollider.enabled = true;
             m_isComingBack = true;
         }
         transform.position = m_raycastHit;

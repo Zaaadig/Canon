@@ -1038,6 +1038,10 @@ PrefabInstance:
       propertyPath: m_target
       value: 
       objectReference: {fileID: 1830236118}
+    - target: {fileID: 2210056801080305823, guid: b152309f131f1564794cadee8296660f, type: 3}
+      propertyPath: m_rotationSpeed
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3789428897139570825, guid: b152309f131f1564794cadee8296660f, type: 3}
       propertyPath: ShapeModule.radius.value
       value: 0.86
@@ -1127,9 +1131,21 @@ PrefabInstance:
       value: P_AI
       objectReference: {fileID: 0}
     - target: {fileID: 7865451825954064013, guid: b152309f131f1564794cadee8296660f, type: 3}
+      propertyPath: m_self
+      value: 
+      objectReference: {fileID: 5292021656342006803}
+    - target: {fileID: 7865451825954064013, guid: b152309f131f1564794cadee8296660f, type: 3}
       propertyPath: m_controller
       value: 
       objectReference: {fileID: 1086203696}
+    - target: {fileID: 7865451825954064013, guid: b152309f131f1564794cadee8296660f, type: 3}
+      propertyPath: m_animationCurve.m_Curve.Array.data[3].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865451825954064013, guid: b152309f131f1564794cadee8296660f, type: 3}
+      propertyPath: m_animationCurve.m_Curve.Array.data[3].value
+      value: 0.15
+      objectReference: {fileID: 0}
     - target: {fileID: 8026373920600327687, guid: b152309f131f1564794cadee8296660f, type: 3}
       propertyPath: m_AngularDrag
       value: 0.5

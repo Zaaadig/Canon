@@ -12,6 +12,7 @@ public class EnemyController : MonoBehaviour
     [Header("Values")]
     [SerializeField] private float m_acceleration;
     [SerializeField] private float m_maxSpeed;
+    [SerializeField] private float m_rotationSpeed;
 
     private NavMeshAgent m_agent;
     private NavMeshPath m_currentPath;
@@ -27,7 +28,12 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        m_self.transform.LookAt(m_player.transform.position);
+        Vector3 rotationToPlayer = m_player.transform.position - transform.position;
+        rotationToPlayer.y = 0f;
+        Quaternion rotation = Quaternion.LookRotation(rotationToPlayer);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * m_rotationSpeed);
+        
         m_pathTimer += Time.deltaTime;
 
         if(m_pathTimer >= m_pathDelay)
