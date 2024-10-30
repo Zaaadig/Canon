@@ -5,9 +5,10 @@ public class PlayerCanonController : MonoBehaviour
 {
     [SerializeField] private PikminController m_pikminController;
     [SerializeField] private float m_Yoffset;
-    
-    private RaycastHit m_raycastHit;
+    //[SerializeField] private LayerMask m_layerGround;
+    //[SerializeField] private LayerMask m_layerWall;
 
+    private RaycastHit m_raycastHit;
 
     void Update()
     {
@@ -20,8 +21,17 @@ public class PlayerCanonController : MonoBehaviour
             {
                 //Vector3 shootPosition = raycastHit.point + Vector3.up * m_Yoffset;
                 // Décaler le pikmin vers le haut pour qu'il ne rentre pas dans le sol
-
                 m_pikminController.Shoot(raycastHit.point);
+                //if (m_layerGround == (m_layerGround | (1 << raycastHit.transform.gameObject.layer)))
+                //{
+                //    print("ground hit");
+
+                //}
+
+                //else if (m_layerWall == (m_layerWall | (1 << raycastHit.transform.gameObject.layer)))
+                //{
+                //    print("Wall hit");
+                //}
             }
         }
     }   

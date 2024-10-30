@@ -21,12 +21,15 @@ public class PikminController : MonoBehaviour
     [SerializeField] private bool m_isShoot;
     [SerializeField] private bool m_isFollow;
     [SerializeField] private bool m_isComingBack;
+    public Vector3 m_wantedPos;
     
     private NavMeshAgent m_agent; 
     private Rigidbody m_rb;
-    public CapsuleCollider m_capsuleCollider;
+    //public CapsuleCollider m_capsuleCollider;
 
     public bool IsFollow { get => m_isFollow; set => m_isFollow = value; }
+    public bool IsShoot { get => m_isShoot; set => m_isShoot = value; }
+    public bool IsComingBack { get => m_isComingBack; set => m_isComingBack = value; }
 
     private void Start()
     {
@@ -34,7 +37,7 @@ public class PikminController : MonoBehaviour
         //m_capsuleCollider = GetComponentInChildren<CapsuleCollider>();
         m_isShoot = false;
         m_isFollow = false;
-        m_isComingBack = false;
+        IsComingBack = false;
         m_rb = GetComponent<Rigidbody>();
     }
     public void Shoot(Vector3 raycastHit)
@@ -51,7 +54,7 @@ public class PikminController : MonoBehaviour
         m_self.transform.LookAt(m_raycastHit);
         m_isShoot = true;
         m_isFollow = false;
-        m_isComingBack = false;
+        IsComingBack = false;
         float timer = 0;
         float duration = Random.Range(m_movementDuration.x, m_movementDuration.y);
         Vector3 startPosition = transform.position;
@@ -63,22 +66,21 @@ public class PikminController : MonoBehaviour
             timer += Time.deltaTime;
             float xOffset = m_animationCurveHorizontal.Evaluate(timer / duration) * hOffset;
             float yOffset = m_animationCurve.Evaluate(timer / duration) * vOffset;
-            Vector3 wantedPos = Vector3.Lerp(startPosition, m_raycastHit, timer / duration);
-            transform.position = wantedPos + (Vector3.right * xOffset) + (Vector3.up * yOffset);
+            m_wantedPos = Vector3.Lerp(startPosition, m_raycastHit, timer / duration);
+            transform.position = m_wantedPos + (Vector3.right * xOffset) + (Vector3.up * yOffset);
             yield return new WaitForEndOfFrame();
             //m_capsuleCollider.enabled = true;
-            m_isComingBack = true;
+            IsComingBack = true;
         }
         transform.position = m_raycastHit;
         m_isShoot = false;
         m_VFX.Play();
         m_VFXDirt.Play();
 
-        StartCoroutine(Delay());
-        
+        StartCoroutine(Delay());       
     }
 
-    private IEnumerator Delay()
+    public IEnumerator Delay()
     {
         m_rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         //jouer l'animation
@@ -91,13 +93,13 @@ public class PikminController : MonoBehaviour
     {
         if(Vector3.Distance(m_enemyController.m_target.position , transform.position) > m_rangeLaunch)
         {
-            m_isComingBack = true;
+            IsComingBack = true;
             m_isFollow = false;
             m_rb.linearDamping = 0f;
         }
         else 
         {
-            m_isComingBack = false;
+            IsComingBack = false;
             m_isFollow = true;
             m_rb.linearDamping = m_rbDrag;
         }
