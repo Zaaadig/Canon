@@ -22,6 +22,7 @@ public class PlayerCanonController : MonoBehaviour
                 //Vector3 shootPosition = raycastHit.point + Vector3.up * m_Yoffset;
                 // Décaler le pikmin vers le haut pour qu'il ne rentre pas dans le sol
                 m_pikminController.Shoot(raycastHit.point);
+                m_pikminController.StartShootingCoroutine(raycastHit.point);
                 //if (m_layerGround == (m_layerGround | (1 << raycastHit.transform.gameObject.layer)))
                 //{
                 //    print("ground hit");

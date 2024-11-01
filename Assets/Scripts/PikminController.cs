@@ -25,6 +25,7 @@ public class PikminController : MonoBehaviour
     
     private NavMeshAgent m_agent; 
     private Rigidbody m_rb;
+    private Coroutine m_shootCoroutine;
     //public CapsuleCollider m_capsuleCollider;
 
     public bool IsFollow { get => m_isFollow; set => m_isFollow = value; }
@@ -47,11 +48,11 @@ public class PikminController : MonoBehaviour
             StartCoroutine(C_Shoot(raycastHit));
         }
     }
-    private IEnumerator C_Shoot(Vector3 m_raycastHit)
+    private IEnumerator C_Shoot(Vector3 raycastHit)
     {
         m_enemyController.enabled = false;
         //m_capsuleCollider.enabled = false;
-        m_self.transform.LookAt(m_raycastHit);
+        m_self.transform.LookAt(raycastHit);
         m_isShoot = true;
         m_isFollow = false;
         IsComingBack = false;
@@ -66,27 +67,44 @@ public class PikminController : MonoBehaviour
             timer += Time.deltaTime;
             float xOffset = m_animationCurveHorizontal.Evaluate(timer / duration) * hOffset;
             float yOffset = m_animationCurve.Evaluate(timer / duration) * vOffset;
-            m_wantedPos = Vector3.Lerp(startPosition, m_raycastHit, timer / duration);
+            m_wantedPos = Vector3.Lerp(startPosition, raycastHit, timer / duration);
             transform.position = m_wantedPos + (Vector3.right * xOffset) + (Vector3.up * yOffset);
             yield return new WaitForEndOfFrame();
             //m_capsuleCollider.enabled = true;
             IsComingBack = true;
         }
-        transform.position = m_raycastHit;
+        transform.position = raycastHit;
         m_isShoot = false;
         m_VFX.Play();
         m_VFXDirt.Play();
 
-        StartCoroutine(Delay());       
+        StartCoroutine(C_Delay());       
     }
 
-    public IEnumerator Delay()
+    public IEnumerator C_Delay()
     {
         m_rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         //jouer l'animation
         yield return new WaitForSeconds(m_animationDelay);
         m_enemyController.enabled = true;
         m_rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+    }
+    public void StartShootingCoroutine(Vector3 raycastHit)
+    {
+        m_shootCoroutine = StartCoroutine(C_Shoot(raycastHit));
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall") && m_shootCoroutine != null && IsShoot == true)
+        {
+            Debug.Log("test");
+            m_wantedPos = collision.contacts[0].point;
+            StopCoroutine(m_shootCoroutine);
+            m_shootCoroutine = null;
+            transform.position = m_wantedPos;
+            Debug.Log("test2");
+        }
     }
 
     private void Update()
