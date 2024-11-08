@@ -26,7 +26,7 @@ public class EnemyController : MonoBehaviour
     private NavMeshAgent m_agent;
     private NavMeshPath m_currentPath;
     private float m_pathTimer = 0;
-    private bool isThrown = false; // Pour savoir si l'ennemi est lancé
+    private bool isThrown = false; // Pour savoir si l'ennemi est lancï¿½
 
     void Start()
     {
@@ -37,7 +37,7 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
-        if (isThrown) return; // Arrête le suivi si l'ennemi est lancé
+        if (isThrown) return; // Arrï¿½te le suivi si l'ennemi est lancï¿½
 
         m_pathTimer += Time.deltaTime;
         if (m_pathTimer >= m_pathDelay)
@@ -61,7 +61,7 @@ public class EnemyController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (isThrown) return; // Pas de mouvement si l'ennemi est lancé
+        if (isThrown) return; // Pas de mouvement si l'ennemi est lancï¿½
 
         if (m_currentPath.corners.Length > 0)
         {
@@ -71,7 +71,7 @@ public class EnemyController : MonoBehaviour
             m_rb.AddForce(dir * m_acceleration, ForceMode.Acceleration);
         }
 
-        m_rb.velocity = Vector3.ClampMagnitude(m_rb.velocity, m_maxSpeed);
+        m_rb.linearVelocity = Vector3.ClampMagnitude(m_rb.linearVelocity, m_maxSpeed);
     }
 
     private void CalculatePath()
@@ -84,13 +84,13 @@ public class EnemyController : MonoBehaviour
     private void Shoot()
     {
         isThrown = true;
-        m_rb.isKinematic = false; // Active le contrôle physique pour le lancement
+        m_rb.isKinematic = false; // Active le contrï¿½le physique pour le lancement
 
         // Calcul de la direction vers le joueur et application de la force de lancement
         Vector3 directionToPlayer = (m_target.position - transform.position).normalized;
         m_rb.AddForce(directionToPlayer * m_throwForce, ForceMode.Impulse);
 
-        Invoke(nameof(ReturnToPlayer), m_returnDelay); // Appelle le retour après `m_returnDelay` secondes
+        Invoke(nameof(ReturnToPlayer), m_returnDelay); // Appelle le retour aprï¿½s `m_returnDelay` secondes
     }
 
     private void DestroyProjectile()
@@ -100,13 +100,13 @@ public class EnemyController : MonoBehaviour
             m_explosionVFX.transform.parent = null;
             m_explosionVFX.Play();
         }
-        // Au lieu de détruire l'objet, on laisse l'effet visuel et on gère le retour
+        // Au lieu de dï¿½truire l'objet, on laisse l'effet visuel et on gï¿½re le retour
     }
 
     private void ReturnToPlayer()
     {
         isThrown = false;
-        m_rb.isKinematic = true; // Réactive le contrôle physique pour le suivi
+        m_rb.isKinematic = true; // Rï¿½active le contrï¿½le physique pour le suivi
     }
 }
 
