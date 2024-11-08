@@ -19,6 +19,9 @@ public class EnemyController : MonoBehaviour
     private float m_pathTimer = 0;
     [SerializeField] private float m_pathDelay = 0.5f;
 
+    public float MaxSpeed { get => m_maxSpeed; set => m_maxSpeed = value; }
+    public float Acceleration { get => m_acceleration; set => m_acceleration = value; }
+
     void Start()
     {
         m_agent = GetComponent<NavMeshAgent>();

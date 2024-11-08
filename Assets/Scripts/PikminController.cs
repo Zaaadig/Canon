@@ -18,6 +18,8 @@ public class PikminController : MonoBehaviour
     [SerializeField] private float m_rangeLaunch = 1f;
     [SerializeField] private float m_rbDrag = 3f;
     [SerializeField] private float m_animationDelay = 2f;
+    [SerializeField] private float m_comingBackSpeed = 7f;
+    [SerializeField] private float m_accelerationSpeed = 25f;
     [SerializeField] private bool m_isShoot;
     [SerializeField] private bool m_isFollow;
     [SerializeField] private bool m_isComingBack;
@@ -98,7 +100,6 @@ public class PikminController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall") && IsShoot == true)
         {
-            Debug.Log("test");
             m_wantedPos = collision.contacts[0].point;
             StopCoroutine(m_shootCoroutine);
             m_shootCoroutine = null;
@@ -107,7 +108,6 @@ public class PikminController : MonoBehaviour
             //IsShoot = false;
             //IsComingBack = true;
             //IsFollow = false;
-            Debug.Log("test2");
         }
     }
 
@@ -124,6 +124,19 @@ public class PikminController : MonoBehaviour
             IsComingBack = false;
             m_isFollow = true;
             m_rb.linearDamping = m_rbDrag;
+        }
+
+        if (IsComingBack == true)
+        {
+            m_enemyController.MaxSpeed = m_comingBackSpeed;
+            m_enemyController.Acceleration = m_accelerationSpeed;
+            //Jouer particules system de courir
+        }
+        
+        if (IsFollow == true)
+        {
+            m_enemyController.MaxSpeed = 5f;
+            m_enemyController.Acceleration = 20f;
         }
     }
 }
