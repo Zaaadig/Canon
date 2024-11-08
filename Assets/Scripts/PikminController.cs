@@ -41,13 +41,13 @@ public class PikminController : MonoBehaviour
         IsComingBack = false;
         m_rb = GetComponent<Rigidbody>();
     }
-    public void Shoot(Vector3 raycastHit)
-    {
-        if(m_isFollow == true)
-        {
-            StartCoroutine(C_Shoot(raycastHit));
-        }
-    }
+    //public void Shoot(Vector3 raycastHit)
+    //{
+    //    if(m_isFollow == true)
+    //    {
+    //        StartCoroutine(C_Shoot(raycastHit));
+    //    }
+    //}
     private IEnumerator C_Shoot(Vector3 raycastHit)
     {
         m_enemyController.enabled = false;
@@ -83,7 +83,7 @@ public class PikminController : MonoBehaviour
 
     public IEnumerator C_Delay()
     {
-        m_rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        m_rb.constraints = /*RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ*/ RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         m_self.GetComponentInChildren<Animator>().Play("A_Delay");
         yield return new WaitForSeconds(m_animationDelay);
         m_enemyController.enabled = true;
@@ -91,17 +91,22 @@ public class PikminController : MonoBehaviour
     }
     public void StartShootingCoroutine(Vector3 raycastHit)
     {
-        m_shootCoroutine = StartCoroutine(C_Shoot(raycastHit));
+        if (m_isFollow == true)
+            m_shootCoroutine = StartCoroutine(C_Shoot(raycastHit));
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Wall") && m_shootCoroutine != null && IsShoot == true)
+        if (collision.gameObject.CompareTag("Wall") && IsShoot == true)
         {
             Debug.Log("test");
             m_wantedPos = collision.contacts[0].point;
             StopCoroutine(m_shootCoroutine);
             m_shootCoroutine = null;
             transform.position = m_wantedPos;
+            StartCoroutine(C_Delay());
+            //IsShoot = false;
+            //IsComingBack = true;
+            //IsFollow = false;
             Debug.Log("test2");
         }
     }
