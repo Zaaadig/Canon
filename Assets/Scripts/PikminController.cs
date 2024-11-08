@@ -15,6 +15,7 @@ public class PikminController : MonoBehaviour
     [SerializeField] private Vector2 m_horizontalOffsetRange;
     [SerializeField] private ParticleSystem m_VFX;
     [SerializeField] private ParticleSystem m_VFXDirt;
+    [SerializeField] private ParticleSystem m_VFXRun;
     [SerializeField] private float m_rangeLaunch = 1f;
     [SerializeField] private float m_rbDrag = 3f;
     [SerializeField] private float m_animationDelay = 2f;
@@ -130,7 +131,11 @@ public class PikminController : MonoBehaviour
         {
             m_enemyController.MaxSpeed = m_comingBackSpeed;
             m_enemyController.Acceleration = m_accelerationSpeed;
-            //Jouer particules system de courir
+            m_VFXRun.Play();
+        }
+        else if (IsComingBack == false)
+        {
+            m_VFX.Stop();
         }
         
         if (IsFollow == true)
