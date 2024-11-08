@@ -17,7 +17,7 @@ public class PikminController : MonoBehaviour
     [SerializeField] private ParticleSystem m_VFXDirt;
     [SerializeField] private float m_rangeLaunch = 1f;
     [SerializeField] private float m_rbDrag = 3f;
-    [SerializeField] private float m_animationDelay = 3f;
+    [SerializeField] private float m_animationDelay = 2f;
     [SerializeField] private bool m_isShoot;
     [SerializeField] private bool m_isFollow;
     [SerializeField] private bool m_isComingBack;
@@ -84,7 +84,7 @@ public class PikminController : MonoBehaviour
     public IEnumerator C_Delay()
     {
         m_rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-        //jouer l'animation
+        m_self.GetComponentInChildren<Animator>().Play("A_Delay");
         yield return new WaitForSeconds(m_animationDelay);
         m_enemyController.enabled = true;
         m_rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
@@ -93,7 +93,6 @@ public class PikminController : MonoBehaviour
     {
         m_shootCoroutine = StartCoroutine(C_Shoot(raycastHit));
     }
-
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Wall") && m_shootCoroutine != null && IsShoot == true)
