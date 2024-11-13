@@ -6194,7 +6194,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 24.09, y: 5.38, z: -10.699241}
-  m_LocalScale: {x: 12.134161, y: 1.9387, z: 1}
+  m_LocalScale: {x: 12.134161, y: 1.9387, z: 2.7419}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 761638992}
@@ -6350,9 +6350,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 851004591}
     - target: {fileID: 7865451825954064013, guid: b152309f131f1564794cadee8296660f, type: 3}
+      propertyPath: m_upForce
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865451825954064013, guid: b152309f131f1564794cadee8296660f, type: 3}
       propertyPath: m_VFXTrail
       value: 
       objectReference: {fileID: 391661865}
+    - target: {fileID: 7865451825954064013, guid: b152309f131f1564794cadee8296660f, type: 3}
+      propertyPath: m_backForce
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 7865451825954064013, guid: b152309f131f1564794cadee8296660f, type: 3}
+      propertyPath: m_downForce
+      value: 22
+      objectReference: {fileID: 0}
     - target: {fileID: 7865451825954064013, guid: b152309f131f1564794cadee8296660f, type: 3}
       propertyPath: m_controller
       value: 

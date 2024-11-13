@@ -111,7 +111,7 @@ public class PikminController : MonoBehaviour
     }
     public void StartShootingCoroutine(Vector3 raycastHit)
     {
-        if (m_isFollow == true)
+        if (IsFollow == true)
             m_shootCoroutine = StartCoroutine(C_Shoot(raycastHit));
     }
     private void OnCollisionEnter(Collision collision)
@@ -122,6 +122,7 @@ public class PikminController : MonoBehaviour
             StopCoroutine(m_shootCoroutine);
             m_shootCoroutine = null;
             transform.position = m_wantedPos;
+            m_rb.linearDamping = 7f;
             Vector3 downForce = Vector3.down * m_downForce;
             Vector3 backForce = -transform.forward * m_backForce;
             Vector3 upForce = Vector3.up * m_upForce;
@@ -137,13 +138,13 @@ public class PikminController : MonoBehaviour
 
     private void Update()
     {
-        if(Vector3.Distance(m_enemyController.m_target.position , transform.position) > m_rangeLaunch && m_isStun == false)
+        if (Vector3.Distance(m_enemyController.m_target.position , transform.position) > m_rangeLaunch && m_isStun == false)
         {
             IsComingBack = true;
             IsFollow = false;
             m_rb.linearDamping = 0f;
         }
-        else 
+        else if (Vector3.Distance(m_enemyController.m_target.position, transform.position) <= m_rangeLaunch && m_isStun == false)
         {
             IsComingBack = false;
             IsFollow = true;
