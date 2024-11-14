@@ -31,7 +31,7 @@ public class PikminController : MonoBehaviour
     [SerializeField] private bool m_isStun;
     public Vector3 m_wantedPos;
     
-    private NavMeshAgent m_agent; 
+    private NavMeshAgent m_agent;
     private Rigidbody m_rb;
     private Coroutine m_shootCoroutine;
     //public CapsuleCollider m_capsuleCollider;
@@ -48,8 +48,9 @@ public class PikminController : MonoBehaviour
         IsFollow = false;
         IsComingBack = false;
         m_rb = GetComponent<Rigidbody>();
-        m_VFXTrail.enabled = false;
+        m_VFXTrail.emitting = false;
         m_isStun = false;
+        m_self.GetComponentInChildren<Animator>().Play("Hold");
     }
     //public void Shoot(Vector3 raycastHit)
     //{
@@ -98,16 +99,24 @@ public class PikminController : MonoBehaviour
         m_rb.constraints = /*RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ*/ RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         m_self.GetComponentInChildren<Animator>().Play("A_Delay");
         yield return new WaitForSeconds(m_animationDelay);
+        m_self.GetComponentInChildren<Animator>().Play("Hold");
         m_enemyController.enabled = true;
         m_rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         m_isStun = false;
         IsComingBack = true;
     }
 
+    public IEnumerator C_Test() 
+    {
+        m_self.GetComponentInChildren<Animator>().Play("A_Test");
+        yield return new WaitForSeconds(1f);
+        m_self.GetComponentInChildren<Animator>().Play("Hold");
+    }
+
     private IEnumerator C_Trail()
     {
         yield return new WaitForSeconds(m_animationDelay);
-        m_VFXTrail.enabled = false;
+        m_VFXTrail.emitting = false;
     }
     public void StartShootingCoroutine(Vector3 raycastHit)
     {
@@ -162,7 +171,6 @@ public class PikminController : MonoBehaviour
             m_VFXRun.Stop();
         }
 
-        
         if (IsFollow == true)
         {
             IsComingBack = false;
@@ -173,13 +181,16 @@ public class PikminController : MonoBehaviour
         if (IsShoot == true)
         {
             IsComingBack = false;
-            m_VFXTrail.enabled = true;
+            m_VFXTrail.emitting = true;
         }
         else if (IsShoot == false)
         {
             StartCoroutine(C_Trail());
         }
 
-        
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            StartCoroutine(C_Test());
+        }
     }
 }
