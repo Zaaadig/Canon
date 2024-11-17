@@ -16,6 +16,7 @@ public class PikminController : MonoBehaviour
     [SerializeField] private ParticleSystem m_VFX;
     [SerializeField] private ParticleSystem m_VFXDirt;
     [SerializeField] private ParticleSystem m_VFXRun;
+    [SerializeField] private ParticleSystem m_VFXHit;
     [SerializeField] private TrailRenderer m_VFXTrail;
     [SerializeField] private float m_rangeLaunch = 1f;
     [SerializeField] private float m_rbDrag = 3f;
@@ -48,7 +49,7 @@ public class PikminController : MonoBehaviour
         IsFollow = false;
         IsComingBack = false;
         m_rb = GetComponent<Rigidbody>();
-        m_VFXTrail.emitting = false;
+        //m_VFXTrail.emitting = false;
         m_isStun = false;
         m_self.GetComponentInChildren<Animator>().Play("Hold");
     }
@@ -116,7 +117,7 @@ public class PikminController : MonoBehaviour
     private IEnumerator C_Trail()
     {
         yield return new WaitForSeconds(m_animationDelay);
-        m_VFXTrail.emitting = false;
+        //m_VFXTrail.emitting = false;
     }
     public void StartShootingCoroutine(Vector3 raycastHit)
     {
@@ -132,6 +133,7 @@ public class PikminController : MonoBehaviour
             m_shootCoroutine = null;
             transform.position = m_wantedPos;
             m_rb.linearDamping = 7f;
+            m_VFXHit.Play();
             Vector3 downForce = Vector3.down * m_downForce;
             Vector3 backForce = -transform.forward * m_backForce;
             Vector3 upForce = Vector3.up * m_upForce;
@@ -181,7 +183,7 @@ public class PikminController : MonoBehaviour
         if (IsShoot == true)
         {
             IsComingBack = false;
-            m_VFXTrail.emitting = true;
+            //m_VFXTrail.emitting = true;
         }
         else if (IsShoot == false)
         {
